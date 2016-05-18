@@ -8,7 +8,7 @@ const RedisProto = require('../RedisProto');
 const proto = new RedisProto();
 
 
-describe('RedisProto', function() {
+describe('RedisProtoTestSuite', function() {
 
   beforeEach(function() {
     // clear the data inside the interpreter before new tests
@@ -16,9 +16,13 @@ describe('RedisProto', function() {
   });
 
   describe('RedisProto-interpret-error-response(-)', function() {
-    proto.push('-ERR unknown command \'help\'\r\n');
-    proto.next();
-    expect(proto.result).to.deep.equal({ error: 'ERR unknown command \'help\'' });
+
+    it('should interpret an error command', function() {
+      proto.push('-ERR unknown command \'help\'\r\n');
+      proto.next();
+      expect(proto.result).to.deep.equal({ error: 'ERR unknown command \'help\'' });
+    });
+
   });
 
 

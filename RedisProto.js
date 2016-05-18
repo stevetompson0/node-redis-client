@@ -20,6 +20,42 @@ class RedisProto {
     this.result = null;
   }
 
+  // accept new response text
+  push(text) {
+    // combine the unused text with the new text and split by \r\n
+    const newLines = (this.text + text).split('\r\n');
+    // the last item of newLines must be empty
+    newLines.pop();
+    // concatenate new lines to unresolved lines
+    this.lines = this.lines.concat(newLines);
+
+  }
+
+  // output next valid result or false
+  next() {
+    const lines = this.lines;
+
+    // check whether lines is empty
+    if (!lines[0]) {
+      return false;
+    }
+
+    const first = lines[0];
+
+    switch (first[0]) {
+      case '-': {
+        // remove the first line and return the error message
+        this.lines = lines.slice(1);
+        this.result = {error: first.slice(1)};
+        return;
+      }
+      default: {
+        return this.result=false;
+      }
+    }
+
+  }
+
 
 
 
